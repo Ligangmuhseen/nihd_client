@@ -1,5 +1,5 @@
 import React from 'react'
-import testimonials1 from "../../../UserAssets/img/testimonials/testimonials-1.jpg";
+import testimonials1 from "../../UserAssets/img/testimonials/testimonials-1.jpg";
 
 const Management = () => {
     return (

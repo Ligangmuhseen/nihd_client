@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
-import testimonials1 from "../../../UserAssets/img/testimonials/testimonials-1.jpg";
-import '../../../UserAssets/vendor/swiper/swiper-bundle.min.css';
+import testimonials1 from "../../UserAssets/img/testimonials/testimonials-1.jpg";
+import '../../UserAssets/vendor/swiper/swiper-bundle.min.css';
 
 function Testimonial() {
 

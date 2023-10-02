@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import logomin from "../../../UserAssets/img/logomin2.png";
+import logomin from "../../UserAssets/img/logomin2.png";
 
 const Header = () => {
 
