@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import API_BASE_URL from '../../../components/apiConfig';
 
 const Faqstable = () => {
   // Create a state variable to store the FAQ data
@@ -9,7 +10,7 @@ const Faqstable = () => {
   // Use the useEffect hook to fetch data when the component mounts
   useEffect(() => {
     // Make an Axios GET request to fetch your data
-    axios.get('http://localhost:8000/faqs/upload/')
+    axios.get(`${API_BASE_URL}/faqs/upload/`)
       .then(response => {
         // Set the fetched data to the state variable
         setFaqData(response.data);
@@ -25,7 +26,7 @@ const Faqstable = () => {
         <div className="row">
           <div className="col-12 text-right">
             <Link to="faqsform">
-              <button className="btn btn-primary" data-toggle="modal" data-target="#faqsmodal">
+              <button className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#faqsmodal">
                 Add New
               </button>
             </Link>
@@ -39,16 +40,16 @@ const Faqstable = () => {
             <table id="example1" className="table table-bordered table-striped dataTable no-footer dtr-inline" aria-describedby="example1_info">
               <thead>
                 <tr>
-                  <th scope="col" className="sorting sorting_asc" tabIndex="0" aria-controls="example1" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Id: activate to sort column descending">
+                  <th scope="col" className="sorting sorting_asc" tabIndex="0" aria-controls="example1" rowSpan="1" colSpan="1" aria-sort="ascending" aria-label="Id: activate to sort column descending">
                     Id
                   </th>
-                  <th scope="col" className="sorting" tabIndex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Title: activate to sort column ascending">
+                  <th scope="col" className="sorting" tabIndex="0" aria-controls="example1" rowSpan="1" colSpan="1" aria-label="Title: activate to sort column ascending">
                     Questions
                   </th>
-                  <th scope="col" className="sorting" tabIndex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Content: activate to sort column ascending">
+                  <th scope="col" className="sorting" tabIndex="0" aria-controls="example1" rowSpan="1" colSpan="1" aria-label="Content: activate to sort column ascending">
                     Answers
                   </th>
-                  <th scope="col" className="sorting" tabIndex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Action: activate to sort column ascending">
+                  <th scope="col" className="sorting" tabIndex="0" aria-controls="example1" rowSpan="1" colSpan="1" aria-label="Action: activate to sort column ascending">
                     Actions
                   </th>
                 </tr>
@@ -67,19 +68,24 @@ const Faqstable = () => {
                     </td>
                     <td className="text-center py-0 align-middle">
                       <div className="btn-group btn-group-sm">
-                        <Link to={`/faq/${faq.id}`} className="btn btn-primary" style={{ margin: "0 5px" }}>
+                        <Link to="#"><button className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#faqsmodal" style={{ margin: "0 5px" }}>
                           <i className="fas fa-eye"></i>
+                          </button>
                         </Link>
-                        <Link to={`/faq/${faq.id}/edit`} className="btn btn-secondary" style={{ margin: "0 5px" }}>
+                        <Link to={`faqsform2/${faq.id}`}> <button className="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#faqsmodal2" style={{ margin: "0 5px" }}>
+                   
                           <i className="fas fa-edit"></i>
+                          </button>
                         </Link>
-                        <button
+                        <Link to={`faqsform3/${faq.id}`}>
+                          <button data-bs-toggle="modal" data-bs-target="#faqsmodal3"
                           className="btn btn-danger"
-                          onClick={() => handleDelete(faq.id)}
+
                           style={{ margin: "0 5px" }}
                         >
                           <i className="fas fa-trash"></i>
-                        </button>
+                          </button>
+                        </Link>
                       </div>
                     </td>
                   </tr>

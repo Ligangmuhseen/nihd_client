@@ -1,173 +1,201 @@
-import { useEffect,useState } from "react";
-import React from 'react';
-import {Outlet,Link} from 'react-router-dom'
+
+import { useEffect, useState } from "react";
+import React from "react";
+import { Outlet, Link, useNavigate } from "react-router-dom";
+import TokenHandling from "./TokenHandling";
+import $ from "jquery";
+import Badge from "@mui/material/Badge";
+import MailIcon from "@mui/icons-material/Mail";
+import axios from "axios";
+import API_BASE_URL from "./apiConfig";
+
+
 // import { a } from "react-router-dom";
 // import CrudeTable from "./CrudeTable";
 // import "../../AdminAssets/css/style.css";
 
-
 const AdminSidebar = () => {
+  const [messageCount, setMessageCount] = useState(0);
+  const [isSidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [loggedInUsername, setLoggedInUsername] = useState("");
+  const [isSuperuser, setIsSuperuser] = useState(false);
+  const navigate = useNavigate();
 
-      const [isSidebarCollapsed, setSidebarCollapsed] = useState(false);
-    
-       const toggleSidebar = () => {
-         setSidebarCollapsed(!isSidebarCollapsed);
-       };
+  const toggleSidebar = () => {
+    setSidebarCollapsed(!isSidebarCollapsed);
+  
+  };
+  
+
+  
+  useEffect(() => {
+    // Retrieve the username from localStorage or your state management system
+  
+    const username = localStorage.getItem("loggedInUsername");
+    const superUser = localStorage.getItem("Superuser");
+    if (username) {
+      setLoggedInUsername(username);
+    }
+
+    if (superUser === "true") {
+      setIsSuperuser(true);
+    }
+  }, []);
 
   useEffect(() => {
     const toggleSidebar = () => {
-      $('#sidebar').toggleClass('active');
+      $("#sidebar").toggleClass("active");
     };
 
-    $('#sidebarCollapse').on('click', toggleSidebar);
+    $("#sidebarCollapse").on("click", toggleSidebar);
 
     // Clean up the event listener when the component unmounts
     return () => {
-      $('#sidebarCollapse').off('click', toggleSidebar);
+      $("#sidebarCollapse").off("click", toggleSidebar);
     };
   }, []);
 
+  const handleLogout = () => {
+    // Clear the token from local storage
+    localStorage.removeItem("authToken");
+    navigate("/login");
+    // Redirect to the login page
+  };
+
+
+
+  useEffect(() => {
+    // Fetch data from the API
+    axios.get(`${API_BASE_URL}/societyform3/count/`)
+      .then(response => {
+        // Set the retrieved message count
+        setMessageCount(response.data);
+      
+      })
+      .catch(error => {
+        console.error('Error fetching data:', error);
+      });
+  }, []); 
+
+  
+
   return (
     <div className="wrapper d-flex align-items-stretch">
-           <nav id="sidebar">
-             <div className="custom-menu">
-              <button
-                type="button"
-                id="sidebarCollapse"
-                className="btn btn-primary"
-                onClick={toggleSidebar}
-              >
-                <i className="fa fa-bars"></i>
-                <span className="sr-only">Toggle Menu</span>
-              </button>
-            </div>
-            <div className="p-4 pt-5">
-              <h1>
-                <Link to="index.html" className="logo">
-                  Admin
-                </Link>
-              </h1>
-              <ul className="list-unstyled components mb-5">
-                <li className={isSidebarCollapsed ? '' : 'active'}>
-                  <Link to="">
+      <TokenHandling />
+      <nav id="sidebar" style={{ maxHeight: "100%" }}>
+        <div className="custom-menu">
+          <button
+            type="button"
+            id="sidebarCollapse"
+            className="btn btn-primary"
+            onClick={toggleSidebar}
+          >
+            <i className="fa fa-bars"></i>
+            <span className="sr-only">Toggle Menu</span>
+          </button>
+        </div>
+        <div className="p-4 pt-5">
+          <h1>
+            <span className="logo">Admin</span>
+          </h1>
+          <ul className="list-unstyled components mb-5">
+            <li className={isSidebarCollapsed ? "" : "active"}>
+              <Link to="">About</Link>
+            </li>
+            <li>
+              <Link to="heroslidersec">HomeSlider</Link>
+            </li>
+            <li>
+              <Link to="videosec">CompanyVideo</Link>
+            </li>
+            <li>
+              <Link to="faqssec">Faqs</Link>
+            </li>
+            <li>
+              <Link to="messagesec">Weekly Message</Link>
+            </li>
+            <li>
+              <Link to="strategicsec">Strategic Area</Link>
+            </li>
+            <li>
+              <Link to="whyussec">Why Us</Link>
+            </li>
 
-                  <a
-                    href="#homeSubmenu"
-                    data-toggle="collapse"
-                    aria-expanded={!isSidebarCollapsed}
-                    className="dropdown-toggle"
-                  >
-                    About
-                  </a>
+            <li>
+              <Link to="gallerysec">Gallery</Link>
+            </li>
+            <li>
+              <Link to="productsec">Product</Link>
+            </li>
+            <li>
+              <Link to="testimonialsec">Testimonial</Link>
+            </li>
+            <li>
+              <Link to="servicesec">Service</Link>
+            </li>
+            <li>
+              <Link to="herosec">Hero section</Link>
+            </li>
+            <li>
+              <Link to="privacysec">Privacy</Link>
+            </li>
+            <li>
+              <Link to="securitysec">Security</Link>
+            </li>
+          
+            <li>
+              <Link to="inboxsec">
+                Inbox &nbsp;
+                <Badge badgeContent={messageCount.count} color="success">
+                  <MailIcon color="action" />
+               
+                </Badge>
+              </Link>
+            </li>
+           
+            {isSuperuser && (
+              <li>
+                <Link to="usersec">User Management</Link>
+              </li>
+            )}
+          </ul>
 
-
-                  </Link>
-                  
-                  <ul
-                    className={`collapse list-unstyled ${
-                      isSidebarCollapsed ? '' : 'show'
-                    }`}
-                    id="homeSubmenu"
-                  >
-                    <li>
-                      <Link to="#">Picture</Link>
-                    </li>
-                    <li>
-                      <Link to="#">Mainbox</Link>
-                    </li>
-                    <li>
-                      <Link to="#">Subbox</Link>
-                    </li>
-                  </ul>
-                </li>
-                <li>
-                  <Link to="faqssec">Faqs</Link>
-                </li>
-                <li>
-                  <Link to="whyussec">
-
-                  <a
-                    href="#pageSubmenu"
-                    data-toggle="collapse"
-                    aria-expanded={!isSidebarCollapsed}
-                    className="dropdown-toggle"
-                  >
-                    Why Us
-                  </a>
-
-                 
-
-
-
-                  </Link>
-                  </li>
-                  
-                  <ul
-                    className={`collapse list-unstyled ${
-                      isSidebarCollapsed ? '' : 'show'
-                    }`}
-                    id="pageSubmenu"
-                  >
-                    <li>
-                      <Link to="#">Mainbox</Link>
-                    </li>
-                    <li>
-                      <Link to="#">Subbox</Link>
-                    </li>
-                   
-                  </ul>
-              
-                <li>
-                  <Link to="gallerysec">Gallery</Link>
-                </li>
-                <li>
-                  <Link to="testimonialsec">Testimonial</Link>
-                </li>
-                <li>
-                  <Link to="servicesec">Service</Link>
-                </li>
-                <li>
-                  <Link to="herosec">Hero section</Link>
-                </li>
-              </ul>
-              
-              <div className="footer">
-                <p>
-                Copyright &copy;
-                  {new Date().getFullYear()}<br/>
-                LigangMuhseen
-            
-                </p>
-              </div>
-            </div>
-          </nav>
-          <div id="content" className="p-4 p-md-5 pt-5">
-            <h2 className="mb-4"><marquee>Welcome Admin</marquee></h2>
-            <Outlet/>
-            {/* <p>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
-              ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-              aliquip ex ea commodo consequat. Duis aute irure dolor in
-              reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-              pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-              culpa qui officia deserunt mollit anim id est laborum.
-            </p>
+          <div className="footer">
             <p>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
-              ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-              aliquip ex ea commodo consequat. Duis aute irure dolor in
-              reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-              pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-              culpa qui officia deserunt mollit anim id est laborum.
-            </p> */}
+              Copyright &copy; &nbsp;NIHD&nbsp;
+              {new Date().getFullYear()}
+            </p>
           </div>
         </div>
+      </nav>
+      <div id="content" className="p-4 p-md-5 pt-5">
+        <button
+          className="btn btn-danger"
+          onClick={handleLogout}
+          style={{ fontSize: "1.2rem", cssFloat: "right" }}
+        >
+          <i
+            className="bi bi-box-arrow-right"
+            style={{ fontSize: "1.5rem" }}
+          ></i>{" "}
+          Logout
+        </button>
+
+        <h2 className="mb-4">
+          <marquee>
+            {" "}
+            Welcome{" "}
+            <span style={{ color: "darkblue" }}>
+              {loggedInUsername || "Admin"}
+            </span>
+          </marquee>
+        </h2>
+        <Outlet />
+      </div>
+    </div>
   );
-}
+};
 
-export default AdminSidebar
-
+export default AdminSidebar;
 
 

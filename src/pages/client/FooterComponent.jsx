@@ -1,88 +1,179 @@
-import React from 'react'
+import React from "react";
+import { Link } from "react-router-dom";
+import UpButton from "./UpButton";
+import scrollToTop from "./ScrollUp";
 
 const FooterComponent = () => {
+  const linkStyle = {
+    color: "#777777",
+  };
+
   return (
     <>
-
-
       <footer id="footer">
-
         <div className="footer-top">
           <div className="container">
             <div className="row">
-
-              <div className="col-lg-3 col-md-6 footer-contact">
-                <h3>Medilab</h3>
+              <div className="col-lg-4 col-md-6 footer-contact">
+                <h3>NIHD</h3>
                 <p>
-                  A108 Adam Street <br/>
-                    New York, NY 535022<br/>
-                      United States <br/><br/>
-                        <strong>Phone:</strong> +1 5589 55488 55<br/>
-                          <strong>Email:</strong> info@example.com<br/>
-                          </p>
-                        </div>
+                  Mtaa
+                  <br />
+                  Dar es salaam
+                  <br />
+                  Tanzania
+                  <br />
+                  <br />
+                  <strong>Nambari ya simu:</strong>
+                  <span style={{ fontFamily: "sanserif" }}>
+                    +255782660707
+                  </span>{" "}
+                  <br />
+                  <Link to="/contact" onClick={scrollToTop} style={linkStyle}>
+                    <strong>Barua pepe:</strong>
+                    <span className="pepe">info@nihd.co.tz</span>
+                    <br />
+                  </Link>
+                </p>
+              </div>
 
-                        <div className="col-lg-2 col-md-6 footer-links">
-                          <h4>Useful Links</h4>
-                          <ul>
-                            <li><i className="bx bx-chevron-right"></i> <a href="#">Home</a></li>
-                            <li><i className="bx bx-chevron-right"></i> <a href="#">About us</a></li>
-                            <li><i className="bx bx-chevron-right"></i> <a href="#">Services</a></li>
-                            <li><i className="bx bx-chevron-right"></i> <a href="#">Our Mission</a></li>
-                            <li><i className="bx bx-chevron-right"></i> <a href="#">Our Vision</a></li>
-                            <li><i className="bx bx-chevron-right"></i> <a href="#">Terms of service</a></li>
-                            <li><i className="bx bx-chevron-right"></i> <a href="#">Privacy policy</a></li>
-                          </ul>
-                        </div>
+              <div className="col-lg-3 col-md-6 footer-links">
+                <h4>Yaliyomo</h4>
 
-                        <div className="col-lg-3 col-md-6 footer-links">
-                          <h4>Our Services</h4>
-                          <ul>
-                            <li><i className="bx bx-chevron-right"></i> <a href="#">Web Design</a></li>
-                            <li><i className="bx bx-chevron-right"></i> <a href="#">Web Development</a></li>
-                            <li><i className="bx bx-chevron-right"></i> <a href="#">Product Management</a></li>
-                            <li><i className="bx bx-chevron-right"></i> <a href="#">Marketing</a></li>
-                            <li><i className="bx bx-chevron-right"></i> <a href="#">Graphic Design</a></li>
-                          </ul>
-                        </div>
+                <Link to="/" onClick={scrollToTop} style={linkStyle}>
+                  <p>
+                    <i className="bx bx-chevron-right"></i>Utangulizi
+                  </p>
+                </Link>
+                <Link to="/about" onClick={scrollToTop} style={linkStyle}>
+                  <p>
+                    <i className="bx bx-chevron-right"></i>Kuhusu sisi
+                  </p>
+                </Link>
+                <Link to="/service" onClick={scrollToTop} style={linkStyle}>
+                  <p>
+                    <i className="bx bx-chevron-right"></i>Huduma zetu
+                  </p>
+                </Link>
+                <Link to="/product" onClick={scrollToTop} style={linkStyle}>
+                  <p>
+                    <i className="bx bx-chevron-right"></i>Bidhaa Zetu
+                  </p>
+                </Link>
+                <Link to="/partnership" onClick={scrollToTop} style={linkStyle}>
+                  <p>
+                    <i className="bx bx-chevron-right"></i>Ubia
+                  </p>
+                </Link>
+                <Link to="/privacy" onClick={scrollToTop} style={linkStyle}>
+                  <p>
+                    <i className="bx bx-chevron-right"></i>Kanuni ya taarifa ya
+                    faragha
+                  </p>
+                </Link>
+                <Link to="/security" onClick={scrollToTop} style={linkStyle}>
+                  <p>
+                    <i className="bx bx-chevron-right"></i>Usalama
+                  </p>
+                </Link>
+                <a href="https://nihd.co.tz/webmail" target="_blank" onClick={scrollToTop} style={linkStyle}>
+                  <p>
+                    <i className="bx bx-chevron-right"></i>Web Mail
+                  </p>
+                </a>
+              </div>
 
-                        <div className="col-lg-4 col-md-6 footer-newsletter">
-                          <h4>Join Our Newsletter</h4>
-                          <p>Tamen quem nulla quae legam multos aute sint culpa legam noster magna</p>
-                          <form action="" method="post">
-                            <input type="email" name="email"/><input type="submit" value="Subscribe" />
-                          </form>
-                        </div>
+              <div className="col-lg-5 col-md-6 footer-links">
+                <h4>Huduma zetu</h4>
 
-                      </div>
-                      </div>
-                    </div>
+                <Link
+                  to="/societyform-1"
+                  onClick={scrollToTop}
+                  style={linkStyle}
+                >
+                  <p>
+                    <i className="bx bx-chevron-right"></i>Kutoa ushauri wa
+                    ushiriki wa afya
+                  </p>
+                </Link>
+                <Link
+                  to="/societyform-2"
+                  onClick={scrollToTop}
+                  style={linkStyle}
+                >
+                  <p>
+                    <i className="bx bx-chevron-right"></i>Kutoa elimu ya afya
+                    kwa jamii
+                  </p>
+                </Link>
+                <Link
+                  to="/societyform-3"
+                  onClick={scrollToTop}
+                  style={linkStyle}
+                >
+                  <p>
+                    <i className="bx bx-chevron-right"></i>Kufuatilia tabia ya
+                    afya ya jamii
+                  </p>
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
 
-                    <div className="container d-md-flex py-4">
+        <div className="container d-md-flex py-4">
+          <div className="me-md-auto text-center text-md-start">
+            <div className="copyright">
+              Hakimiliki &copy;
+              <strong>
+                <span style={{ color: "darkblue" }}>
+                  &nbsp;NIHD {new Date().getFullYear()} &nbsp;
+                </span>
+              </strong>
+              Haki zote zimehifadhiwa
+            </div>
+          </div>
+          <div className="social-links text-center text-md-right pt-3 pt-md-0">
+            <a href="https://x.com/plasmatichvirus?s=09" className="twitter">
+              <i className="bx bxl-twitter"></i>
+            </a>
+            <a
+              href="https://www.facebook.com/profile.php?id=61551022932578"
+              className="facebook"
+            >
+              <i className="bx bxl-facebook"></i>
+            </a>
+            <a
+              href="https://instagram.com/nehemiah_intermolecular_tz?igshid=YzU1NGVlODEzOA=="
+              className="instagram"
+            >
+              <i className="bx bxl-instagram"></i>
+            </a>
+            <a
+              href="http://plasmatichumanvirus.blogspot.com/?m=1"
+              className="blogger"
+            >
+              <i className="bx bxl-blogger"></i>
+            </a>
+            <a
+              href="https://youtube.com/@nehemiahbudi5753?si=AbFO4eSwpT_CmvFg"
+              className="youtube"
+            >
+              <i className="bx bxl-youtube"></i>
+            </a>
+            <a
+              href="https://www.linkedin.com/company/nehemiah-inter-molecular-health-drugs-limited/"
+              className="linkedin"
+            >
+              <i className="bx bxl-linkedin"></i>
+            </a>
+          </div>
+        </div>
 
-                      <div className="me-md-auto text-center text-md-start">
-                        <div className="copyright">
-                          &copy; Copyright <strong><span>Medilab</span></strong>. All Rights Reserved
-                        </div>
-                        <div className="credits">
-
-                          Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
-                        </div>
-                      </div>
-                      <div className="social-links text-center text-md-right pt-3 pt-md-0">
-                        <a href="#" className="twitter"><i className="bx bxl-twitter"></i></a>
-                        <a href="#" className="facebook"><i className="bx bxl-facebook"></i></a>
-                        <a href="#" className="instagram"><i className="bx bxl-instagram"></i></a>
-                        <a href="#" className="google-plus"><i className="bx bxl-skype"></i></a>
-                        <a href="#" className="linkedin"><i className="bx bxl-linkedin"></i></a>
-                      </div>
-                    </div>
-                  </footer>
-
-
-                </>
-
-   );
-}
+        <UpButton />
+      </footer>
+    </>
+  );
+};
 
 export default FooterComponent;

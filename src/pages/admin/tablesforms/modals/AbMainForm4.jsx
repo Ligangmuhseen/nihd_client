@@ -1,30 +1,60 @@
-import React from 'react'
+import React from 'react';
+import axios from 'axios';
+import { useParams} from 'react-router-dom';
+import API_BASE_URL from '../../../../components/apiConfig';
+
+import { useCsrfToken } from '../../../../components/CSRFTokenContext'; // Import the hook
+
 
 const AbMainForm4 = () => {
+  const csrfToken = useCsrfToken(); // Access the CSRF token using the hook
+  const { id } = useParams(); // Assuming you're using the ID from the route params
+
+
+  const handleDelete = () => {
+    axios.delete(`${API_BASE_URL}/abouttwo/upload/${id}/`,{
+      headers: {
+          'X-CSRFToken': csrfToken, // Include the CSRF token in the request headers
+      },
+  })
+      .then((response) => {
+        // Handle success, e.g., show a success message or perform other actions.
+        alert('Data deleted successfully!');
+        window.location.reload();
+      })
+      .catch((error) => {
+        // Handle error, e.g., show an error message or perform other error-related actions.
+        console.error('Error deleting data:', error);
+      });
+  };
+
   return (
     <div>
-        <div class="modal fade" id="aboutmodal4" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+      <div className="modal fade" id="aboutmodal4" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div className="modal-dialog" role="document">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h5 className="modal-title" id="exampleModalLabeltabIndex">Modal title</h5>
+              <button type="button" className="close" data-bs-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
             </div>
-            <div class="modal-body">
-                    <h4>Are sure you want to delete it?</h4>
-                 
+            <div className="modal-body">
+              <h4>Are you sure you want to delete it?</h4>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Confirm</button>
+            <div className="modal-footer">
+              <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">
+                Close
+              </button>
+              <button type="button" className="btn btn-primary" onClick={handleDelete}>
+                Confirm
+              </button>
             </div>
+          </div>
         </div>
+      </div>
     </div>
-</div>
-</div>
-  )
-}
+  );
+};
 
-export default AbMainForm4
+export default AbMainForm4;

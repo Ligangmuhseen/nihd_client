@@ -1,57 +1,68 @@
-import React from 'react'
-
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import API_BASE_URL from '../../components/apiConfig';
+import { Link } from 'react-router-dom';
+import scrollToTop from './ScrollUp';
 
 const Whyus = () => {
+  const [whyChooseData, setWhyChooseData] = useState({});
+  const [iconBoxesData, setIconBoxesData] = useState([]);
+
+  useEffect(() => {
+    // API to get "Why Choose NIHD" and its description
+    axios.get(`${API_BASE_URL}/whyusone/upload/`)
+      .then((response) => {
+        setWhyChooseData(response.data[0]);
+      })
+      .catch((error) => {
+        console.error('Error fetching "Why Choose NIHD" data:', error);
+      });
+
+    // API to get icon box details
+    axios.get(`${API_BASE_URL}/whyustwo/upload/`)
+      .then((response) => {
+        setIconBoxesData(response.data);
+      })
+      .catch((error) => {
+        console.error('Error fetching icon box data:', error);
+      });
+  }, []);
+
   return (
     <>
       <section id="why-us" className="why-us">
         <div className="container">
-
           <div className="row">
             <div className="col-lg-4 d-flex align-items-stretch">
-              <div className="content">
-                <h3>Why Choose NIHD?</h3>
-                <p>
-                  We put greater efforts in advance medicine for providing better quality of treatment and curing most of chronic diseases in the world
-                </p>
+              <div className="content" style={{}}>
+                <h3>{whyChooseData.heading}</h3>
+                <p  style={{ textAlign: "justify", textJustify: "inter-word" }}>{whyChooseData.description}</p>
                 <div className="text-center">
-                  <a href="#" className="more-btn">Learn More <i className="bx bx-chevron-right"></i></a>
+                  <Link to="/readmore" onClick={scrollToTop}><a className="more-btn">Soma Zaidi <i className="bx bx-chevron-right"></i></a></Link>
                 </div>
               </div>
             </div>
             <div className="col-lg-8 d-flex align-items-stretch">
               <div className="icon-boxes d-flex flex-column justify-content-center">
                 <div className="row">
-                  <div className="col-xl-4 d-flex align-items-stretch">
-                    <div className="icon-box mt-4 mt-xl-0">
-                      <i className="bx bx-receipt"></i>
-                      <h4>Corporis voluptates sit</h4>
-                      <p>Consequuntur sunt aut quasi enim aliquam quae harum pariatur laboris nisi ut aliquip</p>
+                  {iconBoxesData.map((iconBox, index) => (
+                    <div className="col-xl-4 d-flex align-items-stretch" key={index}>
+                      <div className="icon-box mt-4 mt-xl-0" >
+                        <img style={{width:"50px"}} src={iconBox.icon} alt="icon" />
+                        
+                        <h4>{iconBox.title}</h4>
+                        <p>{iconBox.description}</p>
+                      </div>
                     </div>
-                  </div>
-                  <div className="col-xl-4 d-flex align-items-stretch">
-                    <div className="icon-box mt-4 mt-xl-0">
-                      <i className="bx bx-cube-alt"></i>
-                      <h4>Ullamco laboris ladore pan</h4>
-                      <p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt</p>
-                    </div>
-                  </div>
-                  <div className="col-xl-4 d-flex align-items-stretch">
-                    <div className="icon-box mt-4 mt-xl-0">
-                      <i className="bx bx-images"></i>
-                      <h4>Labore consequatur</h4>
-                      <p>Aut suscipit aut cum nemo deleniti aut omnis. Doloribus ut maiores omnis facere</p>
-                    </div>
-                  </div>
+                  ))}
                 </div>
               </div>
             </div>
           </div>
-
         </div>
       </section>
     </>
   );
 }
 
-export default Whyus
+export default Whyus;

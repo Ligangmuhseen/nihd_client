@@ -1,93 +1,58 @@
-import React from 'react'
-import image from '../../UserAssets/img/gallery/gallery1.jpg'
-
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import API_BASE_URL from '../../components/apiConfig';
+import Header from './Header';
+import FooterComponent from "./FooterComponent";
+import Topbar from "./Topbar";
 
 const Gallery = () => {
+  const [galleryItems, setGalleryItems] = useState([]);
+
+  useEffect(() => {
+    // Fetch gallery data and update state
+    const fetchGalleryItems = async () => {
+      try {
+        const response = await axios.get(`${API_BASE_URL}/gallery/upload/`); // Replace with your API endpoint
+        setGalleryItems(response.data); // Assuming your API returns an array of gallery items
+      } catch (error) {
+        console.error('Error fetching gallery items:', error);
+      }
+    };
+
+    fetchGalleryItems();
+  }, []);
+
   return (
+
     <>
+    <Topbar/>
+    <Header/>
+    <main id="main" style={{paddingTop:"80px"}}>
       <section id="gallery" className="gallery">
         <div className="container">
-
           <div className="section-title">
-            <h2>Gallery</h2>
-            <p>Magnam dolores commodi suscipit. Necessitatibus eius consequatur ex aliquid fuga eum quidem. Sit sint consectetur velit. Quisquam quos quisquam cupiditate. Et nemo qui impedit suscipit alias ea. Quia fugiat sit in iste officiis commodi quidem hic quas.</p>
+            <h2>Picha Zetu</h2>
+            <p>Karibu kwenye Picha zetu</p>
           </div>
         </div>
-
         <div className="container-fluid">
           <div className="row g-0">
-
-            <div className="col-lg-3 col-md-4">
-              <div className="gallery-item">
-                <a href="../../UserAssets/img/gallery/gallery-1.jpg" className="galelry-lightbox">
-                  <img src={image} alt="" className="img-fluid"/>
-                </a>
+            {galleryItems.map((item, index) => (
+              <div className="col-lg-3 col-md-4" key={index}>
+                <div className="gallery-item">
+                  <a href="#" className="gallery-lightbox">
+                    <img src={item.images} alt="" className="img-fluid" />
+                  </a>
+                </div>
               </div>
-            </div>
-
-            <div className="col-lg-3 col-md-4">
-              <div className="gallery-item">
-                <a href="../../UserAssets/img/gallery/gallery-2.jpg" className="galelry-lightbox">
-                  <img src={image} alt="" className="img-fluid"/>
-                </a>
-              </div>
-            </div>
-
-            <div className="col-lg-3 col-md-4">
-              <div className="gallery-item">
-                <a href="../../UserAssets/img/gallery/gallery-3.jpg" className="galelry-lightbox">
-                  <img src={image} alt="" className="img-fluid"/>
-                </a>
-              </div>
-            </div>
-
-            <div className="col-lg-3 col-md-4">
-              <div className="gallery-item">
-                <a href="../../UserAssets/img/gallery/gallery-4.jpg" className="galelry-lightbox">
-                  <img src={image} alt="" className="img-fluid"/>
-                </a>
-              </div>
-            </div>
-
-            <div className="col-lg-3 col-md-4">
-              <div className="gallery-item">
-                <a href="../../UserAssets/img/gallery/gallery-5.jpg" className="galelry-lightbox">
-                  <img src={image} alt="" className="img-fluid"/>
-                </a>
-              </div>
-            </div>
-
-            <div className="col-lg-3 col-md-4">
-              <div className="gallery-item">
-                <a href="../../UserAssets/img/gallery/gallery-6.jpg" className="galelry-lightbox">
-                  <img src={image} alt="" className="img-fluid"/>
-                </a>
-              </div>
-            </div>
-
-            <div className="col-lg-3 col-md-4">
-              <div className="gallery-item">
-                <a href="../../UserAssets/img/gallery/gallery-7.jpg" className="galelry-lightbox">
-                  <img src={image} alt="" className="img-fluid"/>
-                </a>
-              </div>
-            </div>
-
-            <div className="col-lg-3 col-md-4">
-              <div className="gallery-item">
-                <a href="../../UserAssets/img/gallery/gallery-8.jpg" className="galelry-lightbox">
-                  <img src={image} alt="" className="img-fluid"/>
-                </a>
-              </div>
-            </div>
-
+            ))}
           </div>
-
         </div>
       </section>
-
+      </main>
+      <FooterComponent/>
     </>
-  )
-}
+  );
+};
 
-export default Gallery
+export default Gallery;

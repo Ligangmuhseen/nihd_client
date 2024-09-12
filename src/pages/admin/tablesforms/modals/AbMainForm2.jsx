@@ -1,57 +1,110 @@
-import React from 'react'
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { useCsrfToken } from '../../../../components/CSRFTokenContext'; // Import the hook
+import API_BASE_URL from '../../../../components/apiConfig';
+
+
+
+
+
 
 const AbMainForm2 = () => {
+    const { id } = useParams();
+    const csrfToken = useCsrfToken(); // Access the CSRF token using the hook
+    const [values, setValues] = useState({
+        id: id,
+        description: "",
+        story: ""
+    });
+    const [isEditMode, setIsEditMode] = useState(false);
+
+    useEffect(() => {
+        if (id) {
+            axios.get(`${API_BASE_URL}/aboutone/upload/${id}/`)
+                .then(res => {
+                    setValues({ ...res.data });
+                    setIsEditMode(true);
+                })
+                .catch(err => console.log(err))
+        }
+    }, [id]);
+
+    const onInputChange = (e) => {
+        const { name, value } = e.target;
+        setValues({ ...values, [name]: value });
+    };
+
+    const onSaveChanges = () => {
+        axios.put(`${API_BASE_URL}/aboutone/upload/${id}/`, values, {
+            headers: {
+                'X-CSRFToken': csrfToken, // Include the CSRF token in the request headers
+            },
+        })
+            .then(res => {
+                alert("Changes saved successfully!");
+            })
+            .catch(error => {
+                console.error("Error saving changes:", error);
+            });
+    };
+
     return (
         <div>
-
-            <div class="modal fade" id="aboutmodal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <div className="modal fade" id="aboutmodal2" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div className="modal-dialog" role="document">
+                    <div className="modal-content">
+                        <div className="modal-header">
+                            <h5 className="modal-title" id="exampleModalLabel">Modal title</h5>
+                            <button type="button" className="close" data-bs-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
-                        <div class="modal-body">
+                        <div className="modal-body">
                             <form>
-                                <div class="form-group">
-                                    <label for="subheadingInput">Mainheading</label>
-                                    <textarea class="form-control" id="subheadingInput" rows="3" placeholder="Enter Mainheading"></textarea>
+                             
+                                <div className="form-group">
+                                    <label htmlFor="description">Description</label>
+                                    <textarea
+                                        className="form-control"
+                                        id="description"
+                                        placeholder="Enter About description"
+                                        name="description"
+                                        value={values.description}
+                                        onChange={onInputChange}
+                                        disabled={!isEditMode}
+                                        style={{ minHeight: '150px', resize: 'vertical' }} 
+                                    />
                                 </div>
-
+                                <div className="form-group">
+                                    <label htmlFor="storyInput">Story</label>
+                                    <textarea
+                                        className="form-control"
+                                        id="storyInput"
+                                        rows="3"
+                                        placeholder="Enter the story"
+                                        name="story"
+                                        value={values.story}
+                                        onChange={onInputChange}
+                                        disabled={!isEditMode}
+                                        style={{ minHeight: '150px', resize: 'vertical' }} 
+                                    />
+                                </div>
                             </form>
                         </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary">Save changes</button>
+                        <div className="modal-footer">
+                            <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            {isEditMode ? (
+                                <button type="button" className="btn btn-primary" onClick={onSaveChanges}>Save changes</button>
+                             ) : (
+                                <button type="button" className="btn btn-primary" onClick={() => setIsEditMode(true)}>Edit</button>
+                            )}
                         </div>
                     </div>
                 </div>
             </div>
-
-
         </div>
     )
 }
 
-export default AbMainForm2
-
-
-
-{/* <form>
-                <div class="form-group">
-                    <label for="exampleInputEmail1">Email address</label>
-                    <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" />
-                    <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
-                </div>
-                <div class="form-group">
-                    <label for="exampleInputPassword1">Password</label>
-                    <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password" />
-                </div>
-                <div class="form-group form-check">
-                    <input type="checkbox" class="form-check-input" id="exampleCheck1" />
-                    <label class="form-check-label" for="exampleCheck1">Check me out</label>
-                </div>
-                <button type="submit" class="btn btn-primary">Submit</button>
-            </form> */}
+export default AbMainForm2;

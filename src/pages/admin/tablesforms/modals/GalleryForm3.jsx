@@ -1,30 +1,72 @@
-import React from 'react'
+import React, { useState } from 'react';
+import axios from 'axios';
+import { useParams } from 'react-router-dom';
+import API_BASE_URL from '../../../../components/apiConfig';
+
+import { useCsrfToken } from '../../../../components/CSRFTokenContext'; // Import the hook
+
 
 const GalleryForm3 = () => {
-  return (
-    <div>
-    <div class="modal fade" id="gallerymodal3" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-<div class="modal-dialog" role="document">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-        <div class="modal-body">
-                <h4>Are sure you want to delete it?</h4>
-             
-        </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary">Confirm</button>
-        </div>
-    </div>
-</div>
-</div>
-</div>
-  )
-}
+    const csrfToken = useCsrfToken(); // Access the CSRF token using the hook
+    const { id } = useParams();
+    const [isDeleting, setIsDeleting] = useState(false);
 
-export default GalleryForm3
+    const handleDelete = async () => {
+        try {
+            setIsDeleting(true);
+
+            const response = await axios.delete(`${API_BASE_URL}/gallery/upload/${id}/`,{
+                headers: {
+                    'X-CSRFToken': csrfToken, // Include the CSRF token in the request headers
+                },
+            });
+
+            if (response.status === 204) {
+                // Data was successfully deleted, you can handle it here
+                alert('Image deleted successfully.');
+                // Reload the page to reflect the changes
+                window.location.reload();
+            } else {
+                alert('Failed to delete image.');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        } finally {
+            setIsDeleting(false);
+            // Close the modal here if needed
+        }
+    };
+
+    return (
+        <div>
+            <div className="modal fade" id="gallerymodal3" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div className="modal-dialog" role="document">
+                    <div className="modal-content">
+                        <div className="modal-header">
+                            <h5 className="modal-title" id="exampleModalLabel">Delete Confirmation</h5>
+                            <button type="button" className="close" data-bs-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div className="modal-body">
+                            <h4>Are you sure you want to delete it?</h4>
+                        </div>
+                        <div className="modal-footer">
+                            <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button
+                                type="button"
+                                className="btn btn-danger"
+                                onClick={handleDelete}
+                                disabled={isDeleting}
+                            >
+                                {isDeleting ? 'Deleting...' : 'Confirm'}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+export default GalleryForm3;
